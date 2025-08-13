@@ -89,7 +89,7 @@ const Blog = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/subscribe", { // update to your backend URL
+      const response = await fetch("https://epicyouthsports.onrender.com/subscribe", { // update to your backend URL
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),

@@ -82,7 +82,7 @@ const Registration = () => {
       };
 
       // Send to backend
-      const response = await fetch('http://localhost:3000/register', {
+      const response = await fetch('https://epicyouthsports.onrender.com/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

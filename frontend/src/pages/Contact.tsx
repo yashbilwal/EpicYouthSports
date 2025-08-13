@@ -229,7 +229,7 @@ const Contact = () => {
                       return;
                     }
                     try {
-                      const response = await fetch('http://localhost:5000/subscribe', { // replace with your backend URL
+                      const response = await fetch('https://epicyouthsports.onrender.com/subscribe', { // replace with your backend URL
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ email }),
