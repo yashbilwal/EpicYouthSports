@@ -1,46 +1,74 @@
 require('dotenv').config();
 const express = require("express");
 const cors = require("cors");
+const helmet = require("helmet");
 const { supabase } = require("./config/supabase");
 const registerRouter = require("./routes/register");
 
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(helmet()); // Security headers
+app.use(cors({
+  origin: process.env.FRONTEND_URL || '*' // Configure allowed origins
+}));
 app.use(express.json());
+
+// Health check endpoint (required for Render)
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK' });
+});
 
 // Subscribe route
 app.post("/subscribe", async (req, res) => {
   const { email } = req.body;
 
-  if (!email) {
-    return res.status(400).json({ error: "Email is required" });
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ error: "Valid email is required" });
   }
 
   try {
     const { data, error } = await supabase
       .from("subscribers")
-      .insert([{ email, date: new Date() }]);
+      .insert([{ 
+        email, 
+        date: new Date(),
+        ip_address: req.ip // Track IP for security
+      }]);
 
-    if (error) {
-      return res.status(500).json({ error: error.message });
-    }
+    if (error) throw error;
 
-    res.json({ message: "Email stored successfully", data });
+    res.status(201).json({ 
+      success: true,
+      message: "Subscription successful",
+      data 
+    });
   } catch (err) {
     console.error("Subscribe error:", err);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ 
+      error: err.message || "Internal server error" 
+    });
   }
 });
 
 // Register route
 app.use("/register", registerRouter);
 
-// Start server
+// 404 Handler
+app.use((req, res) => {
+  res.status(404).json({ error: "Endpoint not found" });
+});
+
+// Error Handler
+app.use((err, req, res, next) => {
+  console.error(`[${new Date().toISOString()}] Error:`, err);
+  res.status(500).json({ error: "Internal Server Error" });
+});
+
+// Start server (Render-compatible)
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`);
 });
 
 module.exports = app;
