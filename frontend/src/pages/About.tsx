@@ -28,30 +28,30 @@ const About = () => {
   ];
 
   const teamMembers = [
-    {
-      name: "Nirav Shukla",
-      role: "Founder",
-      image: "https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=400",
-      bio: "Former college basketball player with 15+ years coaching youth sports. Passionate about developing both athletic skills and character in young athletes."
-    },
-    {
-      name: "Coach Sarah Thompson",
-      role: "Volleyball Program Director",
-      image: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=400",
-      bio: "NCAA Division I volleyball champion and certified youth coach. Specializes in fundamental skills and building confidence in young players."
-    },
-    {
-      name: "Coach James Wilson",
-      role: "Basketball Skills Specialist",
-      image: "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=400",
-      bio: "Professional basketball trainer with expertise in player development. Known for his patient approach and ability to connect with kids of all skill levels."
-    },
-    {
-      name: "Coach Emily Chen",
-      role: "Youth Development Coordinator",
-      image: "https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=400",
-      bio: "Child development specialist and certified coach. Focuses on age-appropriate training methods and creating positive sports experiences."
-    }
+    // {
+    //   name: "Nirav Shukla",
+    //   role: "Founder",
+    //   image: "https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=400",
+    //   bio: "Former college basketball player with 15+ years coaching youth sports. Passionate about developing both athletic skills and character in young athletes."
+    // },
+    // {
+    //   name: "Coach Sarah Thompson",
+    //   role: "Volleyball Program Director",
+    //   image: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=400",
+    //   bio: "NCAA Division I volleyball champion and certified youth coach. Specializes in fundamental skills and building confidence in young players."
+    // },
+    // {
+    //   name: "Coach James Wilson",
+    //   role: "Basketball Skills Specialist",
+    //   image: "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=400",
+    //   bio: "Professional basketball trainer with expertise in player development. Known for his patient approach and ability to connect with kids of all skill levels."
+    // },
+    // {
+    //   name: "Coach Emily Chen",
+    //   role: "Youth Development Coordinator",
+    //   image: "https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=400",
+    //   bio: "Child development specialist and certified coach. Focuses on age-appropriate training methods and creating positive sports experiences."
+    // }
   ];
 
   return (
@@ -61,7 +61,7 @@ const About = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="font-heading font-bold text-4xl md:text-6xl mb-6">
-              About <span className="text-energy-yellow">Epic Sports Academy</span>
+              About <span className="text-energy-yellow">Epic Youth Sports</span>
             </h1>
             <p className="font-body text-xl md:text-2xl text-gray-100 max-w-4xl mx-auto leading-relaxed">
               We're passionate about nurturing the next generation of athletes through
@@ -80,7 +80,7 @@ const About = () => {
                 Our Mission
               </h2>
               <p className="font-body text-xl text-light-gray mb-6 leading-relaxed">
-                At Epic Sports Academy, we believe every child has the potential to achieve greatness.
+                At Epic Youth Sports, we believe every child has the potential to achieve greatness.
                 Our mission is to unlock that potential through expert coaching, structured training,
                 and a supportive environment that builds both athletic skills and life skills.
               </p>
@@ -100,7 +100,7 @@ const About = () => {
             <div className="relative">
               <img
                 src={ourmissionImage}
-                alt="Kids training at Epic Sports Academy"
+                alt="Kids training at Epic Youth Sports"
                 className="rounded-2xl shadow-2xl"
               />
               {/* <div className="absolute -bottom-6 -left-6 bg-energy-yellow text-slate-gray p-6 rounded-xl shadow-lg">

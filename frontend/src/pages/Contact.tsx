@@ -160,7 +160,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="font-heading font-semibold text-lg text-slate-gray mb-1">Phone</h3>
-                      <p className="font-body text-light-gray mb-2">(555) 123-4567</p>
+                      {/* <p className="font-body text-light-gray mb-2">(555) 123-4567</p> */}
                       <p className="font-body text-sm text-gray-500">
                         Call us for immediate assistance with registration questions
                       </p>
@@ -173,7 +173,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="font-heading font-semibold text-lg text-slate-gray mb-1">Email</h3>
-                      <p className="font-body text-light-gray mb-2">info@epicsportsacademy.com</p>
+                      <p className="font-body text-light-gray mb-2">info@epicyouthsports.com</p>
                       <p className="font-body text-sm text-gray-500">
                         We respond to all emails within 24 hours
                       </p>
@@ -187,8 +187,9 @@ const Contact = () => {
                     <div>
                       <h3 className="font-heading font-semibold text-lg text-slate-gray mb-1">Address</h3>
                       <p className="font-body text-light-gray mb-2">
-                        SportsPlex at Metuchen, 215 Durham Avenue, <br />
-                        Metuchen, NJ, 08840, United States
+                        Coming soon
+                        {/* SportsPlex at Metuchen, 215 Durham Avenue, <br />
+                        Metuchen, NJ, 08840, United States */}
                       </p>
                       <p className="font-body text-sm text-gray-500">
                         Free parking available for all visitors
@@ -203,9 +204,10 @@ const Contact = () => {
                     <div>
                       <h3 className="font-heading font-semibold text-lg text-slate-gray mb-1">Office Hours</h3>
                       <div className="font-body text-light-gray space-y-1">
-                        <p>Monday - Friday: 9:00 AM - 7:00 PM</p>
+                        coming soon
+                        {/* <p>Monday - Friday: 9:00 AM - 7:00 PM</p>
                         <p>Saturday: 8:00 AM - 5:00 PM</p>
-                        <p>Sunday: 10:00 AM - 4:00 PM</p>
+                        <p>Sunday: 10:00 AM - 4:00 PM</p> */}
                       </div>
                     </div>
                   </div>
@@ -282,14 +284,14 @@ const Contact = () => {
 
           <div className="bg-gray-200 rounded-2xl overflow-hidden h-96">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3029.215313036011!2d-74.3710556!3d40.5410576!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c3b7c54a1e757f%3A0xc55479114339e698!2sSportsPlex%20at%20Metuchen!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus"
+              //src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3029.215313036011!2d-74.3710556!3d40.5410576!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c3b7c54a1e757f%3A0xc55479114339e698!2sSportsPlex%20at%20Metuchen!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus"
               width="100%"
               height="100%"
               style={{ border: 0 }}
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Epic Sports Academy Location"
+              title="Epic Youth Sports Location"
             ></iframe>
           </div>
 
@@ -301,11 +303,11 @@ const Contact = () => {
               className="inline-flex items-center font-body text-epic-blue hover:text-epic-blue-dark transition-colors"
             >
               <MapPin className="h-5 w-5 mr-2" />
-              <span className="text-gray-300 text-sm">
+              {/* <span className="text-gray-300 text-sm">
                 SportsPlex at Metuchen, <br />
                 215 Durham Avenue, Metuchen, <br />
                 NJ, 08840, United States
-              </span>
+              </span> */}
             </a>
           </div>
         </div>

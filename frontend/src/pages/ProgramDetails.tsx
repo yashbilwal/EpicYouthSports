@@ -8,7 +8,7 @@ const ProgramDetails = () => {
   const programData = {
     basketball: {
       title: 'Basketball Excellence Program',
-      image: 'https://images.pexels.com/photos/2834009/pexels-photo-2834009.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      //image: 'https://images.pexels.com/photos/2834009/pexels-photo-2834009.jpeg?auto=compress&cs=tinysrgb&w=1200',
       description: 'Our comprehensive basketball program focuses on developing fundamental skills while building confidence and character. Perfect for beginners to intermediate players who want to take their game to the next level.',
       sessions: [
         'Week 1-2: Ball Handling & Dribbling Fundamentals',
@@ -64,10 +64,10 @@ const ProgramDetails = () => {
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-epic-blue to-blue-800 text-white overflow-hidden">
         <div className="absolute inset-0 bg-black opacity-30"></div>
-        <div 
+        {/* <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url('${program.image}')` }}
-        ></div>
+        ></div> */}
         <div className="absolute inset-0 bg-gradient-to-r from-epic-blue/90 to-epic-blue/70"></div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
@@ -174,7 +174,7 @@ const ProgramDetails = () => {
                   </div>
                   <div className="flex items-center space-x-3 text-slate-gray">
                     <MapPin className="h-5 w-5 text-epic-blue" />
-                    <span className="font-body">Epic Sports Academy</span>
+                    <span className="font-body">Epic Youth Sports</span>
                   </div>
                 </div>
 

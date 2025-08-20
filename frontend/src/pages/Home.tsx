@@ -63,30 +63,30 @@ const Home = () => {
     }
   };
   const testimonials = [
-    {
-      name: "Sarah Johnson",
-      childAge: "Age 12, 7th Grade",
-      text: "My daughter's confidence has skyrocketed since joining Epic Sports Academy. The coaches are amazing and really care about each child's development.",
-      rating: 5
-    },
-    {
-      name: "Mike Chen",
-      childAge: "Age 10, 5th Grade",
-      text: "Best investment we've made! My son went from barely dribbling to making his school team. The structured program really works.",
-      rating: 5
-    },
-    {
-      name: "Lisa Rodriguez",
-      childAge: "Age 9, 4th Grade",
-      text: "The volleyball program is fantastic. My daughter learned proper technique and made great friends. Can't wait for the next session!",
-      rating: 5
-    }
-  ];
+    // {
+    //   name: "Sarah Johnson",
+    //   childAge: "Age 12, 7th Grade",
+    //   text: "My daughter's confidence has skyrocketed since joining Epic Youth Sports. The coaches are amazing and really care about each child's development.",
+    //   rating: 5
+    // },
+    // {
+    //   name: "Mike Chen",
+    //   childAge: "Age 10, 5th Grade",
+    //   text: "Best investment we've made! My son went from barely dribbling to making his school team. The structured program really works.",
+    //   rating: 5
+    // },
+    // {
+    //   name: "Lisa Rodriguez",
+    //   childAge: "Age 9, 4th Grade",
+    //   text: "The volleyball program is fantastic. My daughter learned proper technique and made great friends. Can't wait for the next session!",
+    //   rating: 5
+    // }
+   ];
 
   const whyChooseUs = [
     {
       icon: <Shield className="h-8 w-8 text-epic-blue" />,
-      title: "Certified Coaches",
+      title: "Certified Coach",
       description: "Our coaching team combines professional training with genuine enthusiasm for youth development"
     },
     {
@@ -261,7 +261,7 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="font-heading font-bold text-4xl md:text-5xl text-slate-gray mb-4">
-              Why Parents Choose <span className="text-epic-blue">Epic Sports Academy</span>
+              Why Parents Choose <span className="text-epic-blue">Epic Youth Sports</span>
             </h2>
             <p className="font-body text-xl text-light-gray max-w-3xl mx-auto">
               We're more than just a sports academy - we're a community dedicated to nurturing
@@ -292,7 +292,7 @@ const Home = () => {
             </h2>
             <p className="font-body text-xl text-gray-100 max-w-3xl mx-auto">
               Don't just take our word for it - hear from the families who have experienced
-              the Epic Sports Academy difference.
+              the Epic Youth Sports difference.
             </p>
           </div>
 

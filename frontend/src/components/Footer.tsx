@@ -43,8 +43,8 @@ const Footer = () => {
                 <Activity className="h-6 w-6 text-white" />
               </div>
               <div className="flex flex-col">
-                <span className="font-heading font-bold text-lg text-white">EPIC SPORTS</span>
-                <span className="font-heading text-sm text-gray-300">ACADEMY</span>
+                <span className="font-heading font-bold text-lg text-white">EPIC YOUTH</span>
+                <span className="font-heading text-sm text-gray-300">Sports</span>
               </div>
             </Link>
             <p className="text-gray-300 text-sm leading-relaxed">
@@ -71,23 +71,23 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <Phone className="h-4 w-4 text-energy-yellow" />
-                <span className="text-gray-300 text-sm">+1 516 729 1403</span>
+                {/* <span className="text-gray-300 text-sm">+1 516 729 1403</span> */}
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="h-4 w-4 text-energy-yellow" />
-                <span className="text-gray-300 text-sm">info@epicsportsacademy.com</span>
+                <span className="text-gray-300 text-sm">info@epicyouthsports.com</span>
               </div>
               <div className="flex items-start space-x-3">
                 <MapPin className="h-4 w-4 text-energy-yellow mt-1" />
                 <a
-                  href="https://maps.app.goo.gl/7G2sK2ooFVhFHu6i7"
+                  //href="https://maps.app.goo.gl/7G2sK2ooFVhFHu6i7"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-300 text-sm"
                 >
-                  SportsPlex at Metuchen, <br />
+                  {/* SportsPlex at Metuchen, <br />
                   215 Durham Avenue, Metuchen, <br />
-                  NJ, 08840, United States
+                  NJ, 08840, United States */}
                 </a>
               </div>
             </div>
@@ -131,7 +131,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="border-t border-gray-600 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
-            © 2025 Epic Sports Academy. All rights reserved.
+            © 2025 Epic Youth Sports. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link to="#" className="text-gray-400 hover:text-energy-yellow text-sm transition-colors duration-200">

@@ -110,7 +110,7 @@ const FAQs = () => {
             </h1>
             <p className="font-body text-xl md:text-2xl text-gray-100 max-w-4xl mx-auto leading-relaxed">
               Find answers to common questions about our programs, pricing, safety measures,
-              and what to expect at Epic Sports Academy.
+              and what to expect at Epic Youth Sports.
             </p>
           </div>
         </div>
@@ -186,7 +186,7 @@ const FAQs = () => {
                 Speak directly with our team for immediate answers
               </p>
               <a href="tel:5551234567" className="font-body font-semibold text-epic-blue hover:text-blue-700">
-                (555) 123-4567
+                {/* (555) 123-4567 */}
               </a>
             </div>
 
@@ -199,7 +199,7 @@ const FAQs = () => {
                 Send us your questions and we'll respond within 24 hours
               </p>
               <a href="mailto:info@epicsportsacademy.com" className="font-body font-semibold text-epic-blue hover:text-blue-700">
-                info@epicsportsacademy.com
+                info@epicyouthsports.com
               </a>
             </div>
 
@@ -211,7 +211,7 @@ const FAQs = () => {
               <p className="font-body text-light-gray mb-4">
                 Come see our facility and meet our coaches in person
               </p>
-              <a
+              {/* <a
                 href="https://maps.app.goo.gl/7G2sK2ooFVhFHu6i7"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -223,7 +223,7 @@ const FAQs = () => {
               >
                 SportsPlex at Metuchen, <br />
                 215 Durham Avenue, Metuchen, NJ, 08840, United States
-              </a>
+              </a> */}
             </div>
           </div>
 
