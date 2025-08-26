@@ -51,11 +51,36 @@ const Registration = () => {
   const program = programData[type as keyof typeof programData];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: value
     });
   };
+
+  // Automatically select schedule based on age
+  useEffect(() => {
+    if (formData.childAge) {
+      const age = parseInt(formData.childAge);
+      let scheduleIndex = 0;
+      
+      if (age >= 8 && age <= 12) {
+        // Find schedule with age group 8-12
+        scheduleIndex = program.schedules.findIndex(s => s.ageGroup === '8-12');
+      } else if (age >= 13 && age <= 16) {
+        // Find schedule with age group 13-16
+        scheduleIndex = program.schedules.findIndex(s => s.ageGroup === '13-16');
+      }
+      
+      if (scheduleIndex !== -1) {
+        setFormData(prev => ({
+          ...prev,
+          selectedSchedule: scheduleIndex.toString()
+        }));
+      }
+    }
+  }, [formData.childAge, program.schedules]);
 
   useEffect(() => {
     if (registrationSuccess && registrationId) {
