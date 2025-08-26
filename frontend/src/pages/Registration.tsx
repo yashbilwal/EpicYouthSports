@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { CheckCircle, CreditCard, Shield, Clock } from 'lucide-react';
 
 const Registration = () => {
   const { type } = useParams();
   const [searchParams] = useSearchParams();
   const scheduleIndex = searchParams.get('schedule') || '0';
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     childName: '',
@@ -25,6 +26,10 @@ const Registration = () => {
     emergencyPhone2: '',
     selectedSchedule: scheduleIndex
   });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const [registrationId, setRegistrationId] = useState(null);
 
   const programData = {
     basketball: {
@@ -52,7 +57,22 @@ const Registration = () => {
     });
   };
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  useEffect(() => {
+    if (registrationSuccess && registrationId) {
+      // Redirect to payment page after successful registration
+      // For now, we'll just show a message. Replace with actual navigation when payment is ready:
+      // navigate(`/payment/${registrationId}`);
+      console.log('Redirecting to payment for registration:', registrationId);
+      
+      // For demonstration, reset after 3 seconds
+      const timer = setTimeout(() => {
+        setRegistrationSuccess(false);
+        setRegistrationId(null);
+      }, 3000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [registrationSuccess, registrationId, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,7 +93,7 @@ const Registration = () => {
       return;
     }
 
-    // Check for duplicate emergency contacts (from solution #2)
+    // Check for duplicate emergency contacts
     if (formData.emergencyContact2 &&
       (formData.emergencyContact === formData.emergencyContact2 ||
         formData.emergencyPhone === formData.emergencyPhone2)) {
@@ -124,9 +144,30 @@ const Registration = () => {
         throw new Error(data.error || 'Registration failed');
       }
 
-      // On success
+      // On success - store registration ID and set success state
       console.log('Registration successful:', data);
-      alert('Registration submitted successfully!');
+      setRegistrationId(data.registrationId || 'temp-id'); // Use actual ID from backend
+      setRegistrationSuccess(true);
+
+      // Reset form data
+      setFormData({
+        childName: '',
+        childAge: '',
+        childGrade: '',
+        childSchool: '',
+        parentName: '',
+        parentPhone: '',
+        parentEmail: '',
+        homeAddress: '',
+        city: '',
+        state: '',
+        zipCode: '',
+        emergencyContact: '',
+        emergencyPhone: '',
+        emergencyContact2: '',
+        emergencyPhone2: '',
+        selectedSchedule: scheduleIndex
+      });
 
     } catch (error) {
       // Proper error type handling
@@ -140,7 +181,7 @@ const Registration = () => {
       console.error('Registration error:', error);
       alert(errorMessage);
     } finally {
-      setIsSubmitting(false); // Re-enable button
+      setIsSubmitting(false);
     }
   };
 
@@ -387,7 +428,7 @@ const Registration = () => {
                             Age Group: {schedule.ageGroup}
                           </div>
                         </div>
-                      </label>
+                        </label>
                     ))}
                   </div>
                 </div>
@@ -454,11 +495,12 @@ const Registration = () => {
 
                 <button
                   type="submit"
-                  disabled={isSubmitting}
-                  className={`w-full bg-epic-blue text-white py-4 rounded-lg font-heading font-bold text-lg transition-colors duration-200 flex items-center justify-center ${isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
-                    }`}
+                  disabled={isSubmitting || registrationSuccess}
+                  className={`w-full bg-epic-blue text-white py-4 rounded-lg font-heading font-bold text-lg transition-colors duration-200 flex items-center justify-center ${
+                    isSubmitting || registrationSuccess ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
+                  }`}
                 >
-                  {isSubmitting ? 'Processing...' : (
+                  {isSubmitting ? 'Processing...' : registrationSuccess ? 'Registration Complete!' : (
                     <>
                       <CreditCard className="mr-2 h-5 w-5" />
                       Proceed to Payment - $49 Deposit
