@@ -28,9 +28,9 @@ const Registration = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [optimisticRegistered, setOptimisticRegistered] = useState(false);
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
-  const [registrationId, setRegistrationId] = useState<string | null>(null);
+  const [registrationId, setRegistrationId] = useState(null);
+  
 
   const programData = {
     basketball: {
@@ -53,32 +53,60 @@ const Registration = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    setFormData({
+      ...formData,
+      [name]: value
+    });
   };
 
-  // Auto-select schedule based on age
+  // Automatically select schedule based on age
   useEffect(() => {
     if (formData.childAge) {
       const age = parseInt(formData.childAge);
-      let scheduleIdx = 0;
-
+      let scheduleIndex = 0;
+      
       if (age >= 8 && age <= 12) {
-        scheduleIdx = program.schedules.findIndex(s => s.ageGroup === '8-12');
+        // Find schedule with age group 8-12
+        scheduleIndex = program.schedules.findIndex(s => s.ageGroup === '8-12');
       } else if (age >= 13 && age <= 16) {
-        scheduleIdx = program.schedules.findIndex(s => s.ageGroup === '13-16');
+        // Find schedule with age group 13-16
+        scheduleIndex = program.schedules.findIndex(s => s.ageGroup === '13-16');
       }
-
-      if (scheduleIdx !== -1) {
-        setFormData(prev => ({ ...prev, selectedSchedule: scheduleIdx.toString() }));
+      
+      if (scheduleIndex !== -1) {
+        setFormData(prev => ({
+          ...prev,
+          selectedSchedule: scheduleIndex.toString()
+        }));
       }
     }
   }, [formData.childAge, program.schedules]);
 
+  useEffect(() => {
+    if (registrationSuccess && registrationId) {
+      // Redirect to payment page after successful registration
+      // For now, we'll just show a message. Replace with actual navigation when payment is ready:
+      // navigate(`/payment/${registrationId}`);
+      console.log('Redirecting to payment for registration:', registrationId);
+      
+      // For demonstration, reset after 3 seconds
+      const timer = setTimeout(() => {
+        setRegistrationSuccess(false);
+        setRegistrationId(null);
+      }, 3000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [registrationSuccess, registrationId, navigate]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Prevent multiple submissions
     if (isSubmitting) return;
 
-    // Emergency contacts validation
+    // Check if parent info is used as emergency contact
     const isParentAsEmergency1 = formData.parentName === formData.emergencyContact ||
       formData.parentPhone === formData.emergencyPhone;
 
@@ -91,6 +119,7 @@ const Registration = () => {
       return;
     }
 
+    // Check for duplicate emergency contacts
     if (formData.emergencyContact2 &&
       (formData.emergencyContact === formData.emergencyContact2 ||
         formData.emergencyPhone === formData.emergencyPhone2)) {
@@ -98,60 +127,93 @@ const Registration = () => {
       return;
     }
 
-    // Optimistic UI: show registration received immediately
-    setOptimisticRegistered(true);
     setIsSubmitting(true);
 
-    const selectedScheduleData = program.schedules[parseInt(formData.selectedSchedule)];
-    const payload = {
-      childName: formData.childName,
-      childAge: formData.childAge,
-      childGrade: formData.childGrade,
-      childSchool: formData.childSchool,
-      parentName: formData.parentName,
-      parentPhone: formData.parentPhone,
-      parentEmail: formData.parentEmail,
-      homeAddress: formData.homeAddress,
-      city: formData.city,
-      state: formData.state,
-      zipCode: formData.zipCode,
-      emergencyContact1Name: formData.emergencyContact,
-      emergencyContact1Phone: formData.emergencyPhone,
-      emergencyContact2Name: formData.emergencyContact2 || '',
-      emergencyContact2Phone: formData.emergencyPhone2 || '',
-      selectedScheduleDay: selectedScheduleData.day,
-      selectedScheduleTime: selectedScheduleData.time,
-      selectedScheduleDates: selectedScheduleData.dates,
-      selectedScheduleAgeGroup: selectedScheduleData.ageGroup,
-      programType: type
-    };
-
     try {
+      const selectedScheduleData = program.schedules[parseInt(formData.selectedSchedule)];
+
+      const payload = {
+        childName: formData.childName,
+        childAge: formData.childAge,
+        childGrade: formData.childGrade,
+        childSchool: formData.childSchool,
+        parentName: formData.parentName,
+        parentPhone: formData.parentPhone,
+        parentEmail: formData.parentEmail,
+        homeAddress: formData.homeAddress,
+        city: formData.city,
+        state: formData.state,
+        zipCode: formData.zipCode,
+        emergencyContact1Name: formData.emergencyContact,
+        emergencyContact1Phone: formData.emergencyPhone,
+        emergencyContact2Name: formData.emergencyContact2 || '',
+        emergencyContact2Phone: formData.emergencyPhone2 || '',
+        selectedScheduleDay: selectedScheduleData.day,
+        selectedScheduleTime: selectedScheduleData.time,
+        selectedScheduleDates: selectedScheduleData.dates,
+        selectedScheduleAgeGroup: selectedScheduleData.ageGroup,
+        programType: type
+      };
+
+      // Send to backend
       const response = await fetch('https://epicyouthsports.onrender.com/register', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(payload)
       });
 
       const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'Registration failed');
 
-      setRegistrationId(data.registrationId || 'temp-id');
+      if (!response.ok) {
+        throw new Error(data.error || 'Registration failed');
+      }
+
+      // On success - store registration ID and set success state
+      console.log('Registration successful:', data);
+      setRegistrationId(data.registrationId || 'temp-id'); // Use actual ID from backend
       setRegistrationSuccess(true);
-      setOptimisticRegistered(false);
 
-      // Reset form
-      setFormData(prev => ({ ...prev, childName: '', childAge: '', childGrade: '', childSchool: '', parentName: '', parentPhone: '', parentEmail: '', homeAddress: '', city: '', state: '', zipCode: '', emergencyContact: '', emergencyPhone: '', emergencyContact2: '', emergencyPhone2: '', selectedSchedule: scheduleIndex }));
+      // Reset form data
+      setFormData({
+        childName: '',
+        childAge: '',
+        childGrade: '',
+        childSchool: '',
+        parentName: '',
+        parentPhone: '',
+        parentEmail: '',
+        homeAddress: '',
+        city: '',
+        state: '',
+        zipCode: '',
+        emergencyContact: '',
+        emergencyPhone: '',
+        emergencyContact2: '',
+        emergencyPhone2: '',
+        selectedSchedule: scheduleIndex
+      });
 
     } catch (error) {
-      setOptimisticRegistered(false);
-      alert(error instanceof Error ? error.message : 'Registration failed');
+      // Proper error type handling
+      let errorMessage = 'Registration failed. Please try again.';
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else if (typeof error === 'string') {
+        errorMessage = error;
+      }
+
+      console.error('Registration error:', error);
+      alert(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  if (!program) return <div>Program not found</div>;
+  if (!program) {
+    return <div>Program not found</div>;
+  }
 
   const selectedSchedule = program.schedules[parseInt(formData.selectedSchedule)];
 
@@ -392,7 +454,7 @@ const Registration = () => {
                             Age Group: {schedule.ageGroup}
                           </div>
                         </div>
-                      </label>
+                        </label>
                     ))}
                   </div>
                 </div>
@@ -460,25 +522,17 @@ const Registration = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting || registrationSuccess}
-                  className={`w-full bg-epic-blue text-white py-4 rounded-lg font-heading font-bold text-lg transition-colors duration-200 flex items-center justify-center ${isSubmitting || registrationSuccess
-                    ? 'opacity-50 cursor-not-allowed'
-                    : 'hover:bg-blue-700'
-                    }`}
+                  className={`w-full bg-epic-blue text-white py-4 rounded-lg font-heading font-bold text-lg transition-colors duration-200 flex items-center justify-center ${
+                    isSubmitting || registrationSuccess ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
+                  }`}
                 >
-                  {isSubmitting
-                    ? 'Processing...'
-                    : registrationSuccess
-                      ? 'Registration Confirmed!'
-                      : optimisticRegistered
-                        ? 'Registration Received!'
-                        : (
-                          <>
-                            <CreditCard className="mr-2 h-5 w-5" />
-                            Proceed to Payment - $49 Deposit
-                          </>
-                        )}
+                  {isSubmitting ? 'Processing...' : registrationSuccess ? 'Registration Complete!' : (
+                    <>
+                      <CreditCard className="mr-2 h-5 w-5" />
+                      Proceed to Payment - $49 Deposit
+                    </>
+                  )}
                 </button>
-
               </form>
             </div>
           </div>
