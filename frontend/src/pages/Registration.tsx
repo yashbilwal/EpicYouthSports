@@ -28,10 +28,9 @@ const Registration = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [registrationSuccess, setRegistrationSuccess] = useState(false);
-  const [registrationId, setRegistrationId] = useState(null);
   const [optimisticRegistered, setOptimisticRegistered] = useState(false);
-
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const [registrationId, setRegistrationId] = useState<string | null>(null);
 
   const programData = {
     basketball: {
@@ -54,58 +53,32 @@ const Registration = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-
-    setFormData({
-      ...formData,
-      [name]: value
-    });
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // Automatically select schedule based on age
+  // Auto-select schedule based on age
   useEffect(() => {
     if (formData.childAge) {
       const age = parseInt(formData.childAge);
-      let scheduleIndex = 0;
+      let scheduleIdx = 0;
 
       if (age >= 8 && age <= 12) {
-        // Find schedule with age group 8-12
-        scheduleIndex = program.schedules.findIndex(s => s.ageGroup === '8-12');
+        scheduleIdx = program.schedules.findIndex(s => s.ageGroup === '8-12');
       } else if (age >= 13 && age <= 16) {
-        // Find schedule with age group 13-16
-        scheduleIndex = program.schedules.findIndex(s => s.ageGroup === '13-16');
+        scheduleIdx = program.schedules.findIndex(s => s.ageGroup === '13-16');
       }
 
-      if (scheduleIndex !== -1) {
-        setFormData(prev => ({
-          ...prev,
-          selectedSchedule: scheduleIndex.toString()
-        }));
+      if (scheduleIdx !== -1) {
+        setFormData(prev => ({ ...prev, selectedSchedule: scheduleIdx.toString() }));
       }
     }
   }, [formData.childAge, program.schedules]);
-
-  useEffect(() => {
-    if (registrationSuccess && registrationId) {
-      // Redirect to payment page after successful registration
-      // For now, we'll just show a message. Replace with actual navigation when payment is ready:
-      // navigate(`/payment/${registrationId}`);
-      console.log('Redirecting to payment for registration:', registrationId);
-
-      // For demonstration, reset after 3 seconds
-      const timer = setTimeout(() => {
-        setRegistrationSuccess(false);
-        setRegistrationId(null);
-      }, 3000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [registrationSuccess, registrationId, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isSubmitting) return;
 
-    // Validate emergency contacts (keep your existing checks)
+    // Emergency contacts validation
     const isParentAsEmergency1 = formData.parentName === formData.emergencyContact ||
       formData.parentPhone === formData.emergencyPhone;
 
@@ -125,7 +98,7 @@ const Registration = () => {
       return;
     }
 
-    // **Optimistic UI**: assume registration will succeed
+    // Optimistic UI: show registration received immediately
     setOptimisticRegistered(true);
     setIsSubmitting(true);
 
@@ -157,55 +130,28 @@ const Registration = () => {
       const response = await fetch('https://epicyouthsports.onrender.com/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(payload)
       });
 
       const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Registration failed');
-      }
+      if (!response.ok) throw new Error(data.error || 'Registration failed');
 
       setRegistrationId(data.registrationId || 'temp-id');
       setRegistrationSuccess(true);
-
-      // Reset form
-      setFormData({
-        childName: '',
-        childAge: '',
-        childGrade: '',
-        childSchool: '',
-        parentName: '',
-        parentPhone: '',
-        parentEmail: '',
-        homeAddress: '',
-        city: '',
-        state: '',
-        zipCode: '',
-        emergencyContact: '',
-        emergencyPhone: '',
-        emergencyContact2: '',
-        emergencyPhone2: '',
-        selectedSchedule: scheduleIndex
-      });
-
-    } catch (error) {
-      // Rollback optimistic UI
       setOptimisticRegistered(false);
 
-      let errorMessage = 'Registration failed. Please try again.';
-      if (error instanceof Error) errorMessage = error.message;
-      alert(errorMessage);
-      console.error(error);
+      // Reset form
+      setFormData(prev => ({ ...prev, childName: '', childAge: '', childGrade: '', childSchool: '', parentName: '', parentPhone: '', parentEmail: '', homeAddress: '', city: '', state: '', zipCode: '', emergencyContact: '', emergencyPhone: '', emergencyContact2: '', emergencyPhone2: '', selectedSchedule: scheduleIndex }));
+
+    } catch (error) {
+      setOptimisticRegistered(false);
+      alert(error instanceof Error ? error.message : 'Registration failed');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-
-  if (!program) {
-    return <div>Program not found</div>;
-  }
+  if (!program) return <div>Program not found</div>;
 
   const selectedSchedule = program.schedules[parseInt(formData.selectedSchedule)];
 
@@ -513,22 +459,24 @@ const Registration = () => {
 
                 <button
                   type="submit"
-                  disabled={isSubmitting || registrationSuccess || optimisticRegistered}
-                  className={`w-full bg-epic-blue text-white py-4 rounded-lg font-heading font-bold text-lg transition-colors duration-200 flex items-center justify-center ${isSubmitting || registrationSuccess || optimisticRegistered
-                      ? 'opacity-50 cursor-not-allowed'
-                      : 'hover:bg-blue-700'
+                  disabled={isSubmitting || registrationSuccess}
+                  className={`w-full bg-epic-blue text-white py-4 rounded-lg font-heading font-bold text-lg transition-colors duration-200 flex items-center justify-center ${isSubmitting || registrationSuccess
+                    ? 'opacity-50 cursor-not-allowed'
+                    : 'hover:bg-blue-700'
                     }`}
                 >
                   {isSubmitting
                     ? 'Processing...'
-                    : registrationSuccess || optimisticRegistered
-                      ? 'Registration Received!'
-                      : (
-                        <>
-                          <CreditCard className="mr-2 h-5 w-5" />
-                          Proceed to Payment - $49 Deposit
-                        </>
-                      )}
+                    : registrationSuccess
+                      ? 'Registration Confirmed!'
+                      : optimisticRegistered
+                        ? 'Registration Received!'
+                        : (
+                          <>
+                            <CreditCard className="mr-2 h-5 w-5" />
+                            Proceed to Payment - $49 Deposit
+                          </>
+                        )}
                 </button>
 
               </form>
